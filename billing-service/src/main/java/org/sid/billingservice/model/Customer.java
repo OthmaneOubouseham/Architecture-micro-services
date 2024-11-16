@@ -7,6 +7,6 @@ import lombok.Setter;
 public class Customer {
 
     private Long id;
-    private String nam;
+    private String name;
     private String email;
 }
