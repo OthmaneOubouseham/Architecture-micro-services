@@ -17,6 +17,10 @@ services:
       - "9999:9999"
     expose:
       - '9999'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9999/actuator/health" ]
+      interval: 10s
+      retries: 4
     environment:
       - DISCOVERY_SERVICE_URL:http://ecom-discovery-service:8761/eureka
     depends_on:
