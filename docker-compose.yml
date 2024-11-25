@@ -33,5 +33,5 @@ services:
       - DISCOVERY_SERVICE_URL:http://ecom-discovery-service:8761/eureka
       - CONFIG_SERVICE_URL=http://ecom-config-service:9999
     depends_on:
-      - ecom-discovery-service
-      - ecom-config-service
+      ecom-config-service:
+        condition: service_healthy
