@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: ecom-customer-service
+  name: ecom-customer-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ecom-customer-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: ecom-customer-service
+    spec:
+      containers:
+        - env:
+            - name: CONFIG_SERVICE_URL
+              value: http://ecom-config-service:9999
+          image: ecom-customer-service
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -f
+                - http://localhost:8081/actuator/health
+            failureThreshold: 4
+            periodSeconds: 10
+          name: ecom-customer-service
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+      restartPolicy: Always

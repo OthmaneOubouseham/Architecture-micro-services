@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: ecom-config-service
+  name: ecom-config-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ecom-config-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml
+        kompose.version: 1.35.0 (9532ceef3)
+      labels:
+        io.kompose.service: ecom-config-service
+    spec:
+      containers:
+        - image: ecom-config-service
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -f
+                - http://localhost:9999/actuator/health
+            failureThreshold: 4
+            periodSeconds: 10
+          name: ecom-config-service
+          ports:
+            - containerPort: 9999
+              protocol: TCP
+      restartPolicy: Always

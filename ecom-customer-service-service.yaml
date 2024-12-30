@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.35.0 (9532ceef3)
+  labels:
+    io.kompose.service: ecom-customer-service
+  name: ecom-customer-service
+spec:
+  ports:
+    - name: "8081"
+      port: 8081
+      targetPort: 8081
+    - name: 8081-tcp
+      port: 8081
+      targetPort: 8081
+  selector:
+    io.kompose.service: ecom-customer-service
